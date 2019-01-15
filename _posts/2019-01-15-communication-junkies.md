@@ -5,15 +5,18 @@ description: 对社交媒体的一些思考
 lang: zh
 ---
 
-Alan Kay communication junkies
-AI Architect里Yoshua Bengio说 加拿大禁止对儿童投放广告 因为儿童是脆弱的 voneroable 我们都是vonerable的
-Steve Jobs说Wheels of the Minds 做到了吗？
+> Humans are communications junkies. We just can't get enough. ---Alan Kay
 
-从软件上，我只认可张小龙的微信。
-Alan Kay把现在的手机和移动终端叫做mind-numbing consumption devices
+今天三家科技公司都发布了自己的社交媒体APP。我讨厌所有三款应用的原因除了取名的毫无审美、设计的毫无新意、以及处处充斥着红包、匿名发布等套路之外，最主要的原因是由于这些工具完全违背了当初个人电脑和移动终端设计的初衷。
 
-最可怕的并不是你的观点被在线社交媒体影响
+![alan-kay-with-dynabook](/public/images/alan-kay-with-dynabook.webp)
+*Alan Kay展示Dynabook的原型机。Photo:  Marcin Wichary, va Wikimedia*
 
-而是你的注意力，也就是你的时间。人生存在世界上只有时间是最公平的，然而社交媒体占用人的时间。因为我们首先是communication junkies，我们的大脑深处同时还具有原始的动物性，那就是逃避痛苦，追求快乐。
+图灵奖得主、现代面向对象编程思想和个人电脑的先驱，Alan Kay在1982年就说过这样的话：人类就是对交流这件事情上瘾，就是停不下来。我认可这个观点，那么在这样的前提下，制造工具的目的可以分为两种：正如A16Z的Chris Dixon把投资者分为builders和extractors一样，builders看到被投资者的价值，帮助他们产生更大的价值，extractors看到被投资者的价值，并攫取他们的价值。*好的工具协助人们更高效的完成工作，坏的工具就像毒品，一步一步蚕食人们的私人时间。*Steve Jobs成立苹果公司之初就把Wheels of the Minds作为他对苹果产品的愿景，在二〇一九年，我们回望这个愿景，它实现了吗？我觉得还差的很远。
 
-![Alan Kay展示Dynabook的原型机](/public/images/alan-kay-with-dynabook.webp)
+在《AI Architect》里，Yoshua Bengio说：在加拿大，针对儿童投放广告的行为是被禁止的，因为儿童是脆弱的（vulnerable）。其实，在今天这个时代，面对扑面而来的海量信息，我们都可以被称为vulnerable。Facebook已经被曝利用算法影响参选者的政治观点。然而，我想说的是最可怕的并不是你的观点被在线社交媒体影响，而是你的注意力，也就是你的时间被攫取。在这个充满不公平的世界上，只有时间对每个面对它的的人都是公平的，以恒定的速度流逝。一个人的时间才是属于他/她最宝贵的财富，而失去时间换来的，最好是等值或者超值的收获。但是很可惜，在我们的大脑深处的原始动物性本能告诉我们：逃避痛苦，追求快乐，尤其是短期的快乐，所以如果在这种意识的驱使下我们采用贪心算法，最大化利益的做法无疑是划动屏幕，并期待下一个跳出的视频/新闻/段子给你带来更大的刺激。这无非就是上瘾，跟药物上瘾没有什么区别。这也是为什么Alan Kay仍然对现在的移动终端不满意，并称之为mind-numbing consumption devices。
+
+>这两年业界的目标变成了所有APP应该尽可能多地去抓住用户的停留时长，这个是违背我的常识的。一个用户每天的时间是有限的，这是次要的。最主要的是，技术的使命应该是帮助人类提高效率。比如作为一个好的沟通工具，一定要高效。 ---张小龙
+
+微信是为数不多的在社交领域让这个世界变得更好的应用。张小龙2018年底微信之夜的发言片段显示了他仍旧超过所有互联网产品经理的思维模式。不过，在街头巷尾地铁和咖啡厅里，越来越多用拇指刷着手机的人似乎预示着社交媒体发展的不可抗拒的方向。不管怎样，我们仍然只是communication junkies。
+
