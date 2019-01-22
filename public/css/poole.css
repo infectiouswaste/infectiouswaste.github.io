@@ -343,6 +343,10 @@ tbody tr:nth-child(odd) th {
   margin-bottom: 4em;
 }
 
+.center {
+  text-align: center;
+}
+
 /* Blog post or page title */
 .page-title,
 .post-title,

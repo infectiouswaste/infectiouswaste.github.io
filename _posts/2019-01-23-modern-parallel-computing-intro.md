@@ -8,12 +8,13 @@ lang: en
 > And since geometry is the right foundation of all painting, I have decided to teach its rudiments and principles to all youngsters eager for art. ---Albrecht Dürer
 
 ![early-graphics-hw](/public/images/early-graphics-hw.jpg){:height="50%" width="50%"}
+{:.center}
 *Artist using a perspective machine. Albrecht Dürer, 1525*
 
 Since Darwin's age, people have been using graphics hardware for creating pictures. Early such grahics hardware includes perspective machine. If you look closely enough, it has several features of modern graphics hardware: it does the transformation of perspective, and it is discrete (e.g. sampling on the surface of the objects one wants to draw, then finishing the whole drawing by smoothing).
 
 ![early-electronic-graphics-hw](/public/images/sketchpad.png){:height="50%" width="50%"}
-*Ivan Sutherland with his SKETCHPAD. 1963*
+->*Ivan Sutherland with his SKETCHPAD. 1963*<-
 
 Ivan Sutherland, the creator of modern computer grapchis, has developed SKETCHPAD, an early electronic graphics hardware for human-computer interaction as well as CAD. While it was basically in 2D, people have soon started 3D rendering and created "graphics pipeline".
 
