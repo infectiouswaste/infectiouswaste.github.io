@@ -1,11 +1,11 @@
 ---
 layout: post
 title: Modern Parallel Computing (Part 2A) - How Does A GPU Work? Hardware Big Ideas 
-description: A series of post when I refresh my memory on GPU. Loosely based on JDO's course material.
+description: A series of post when I refresh my memory on the GPU. Loosely based on JDO's course material.
 lang: en
 ---
 
-> “If you were plowing a field, which would you rather use? Two strong oxen or 1024 chickens?” ---Seymour Cray
+> "That is positively the dopiest idea I ever heard." ---Feynman when first heard of the idea of connection machine, a parallel computer with a million processors.
 
 The challenge of modern GPU design is not how to pack enough arithmetic on a chip but instead how to do so in an energy-efficient way since the communication is the dominant power cost. For this reason, one must exploit locality. Let's put it this way: the other side of chip is many cycles away, and off-chip is hundreds of cycles away. Looking back from the first day that CUDA and general purpose GPU computing was born till now, the big iead has always been: **GPUs are designed to maximize throughput as opposed to minimize latency.** In the remaining part of this post, we will take a tour to go over some of the big ideas in GPU's hardware design.
 

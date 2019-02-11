@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Modern Parallel Computing (Part 1) - A Bit of History
-description: A series post when I refresh my memory on GPU. Loosely based on JDO's course material.
+description: A series post when I refresh my memory on the GPU. Loosely based on JDO's course material.
 lang: en
 ---
 
