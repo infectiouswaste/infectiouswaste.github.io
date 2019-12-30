@@ -1,0 +1,27 @@
+---
+layout: post
+title: GPU Programming - Reduce
+description: This article talks about one of the most fundamental primitives for GPU computing---Reduce.
+lang: en
+---
+
+Definition:
+
+top-down view: (Mark Harris slides on reduction)
+set up nt, vt, number_of_block == count / (nt*vt)
+if number_of_block is order of magnitude larger than nt*vt, recursively load cta_reduce.
+until all results can be done in one block.
+
+bottom-up view:
+warp reduce
+raking of vt items
+
+combine together:
+nt*vt: each block
+each thread do vt raking
+each block using nt thread to do warp reduce, if nt > warp_size, warp_size/nt items use raking per thread before warp reduce.
+
+benchmark:
+
+application:
+

@@ -1,0 +1,18 @@
+---
+layout: post
+title: GPU Programming - Prefix-Sum (Scan)
+description: This article talks about one of the most fundamental primitives for GPU computing---Prefix Sum.
+lang: en
+---
+
+Definition:
+
+top-down view: (moderngpu wiki)
+
+bottom-up view:
+
+combine together:
+
+benchmark:
+
+application:
