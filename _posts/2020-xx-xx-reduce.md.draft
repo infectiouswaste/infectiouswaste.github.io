@@ -4,24 +4,197 @@ title: GPU Programming - Reduce
 description: This article talks about one of the most fundamental primitives for GPU computing---Reduce.
 lang: en
 ---
+This post starts our series on fundamental primitives for GPU computing. [Reduction](https://en.wikipedia.org/wiki/Reduction_Operator) reduces an array of elements into a single result. For reduction via addition operator, here is an example:
+```C++
+Input:      1   7   4   0   9   4   8   8   2   4   5   5   1   7   1   1   5   2   7   6
 
-Definition:
+Reduction: 87
+```
 
-top-down view: (Mark Harris slides on reduction)
-set up nt, vt, number_of_block == count / (nt*vt)
-if number_of_block is order of magnitude larger than nt*vt, recursively load cta_reduce.
-until all results can be done in one block.
+Of course to show benefit of using GPUs, one has to make the amount of elements to be reduced more than a million or even more. To fully describe this operator, we use both top-down and bottom-up view.
 
-bottom-up view:
-warp reduce
-raking of vt items
+__Top-Down View__
 
-combine together:
-nt*vt: each block
-each thread do vt raking
-each block using nt thread to do warp reduce, if nt > warp_size, warp_size/nt items use raking per thread before warp reduce.
+In our previous posts, we show that we usually break down a task on the GPU into two hierarchical levels: the block (CTA) level and the thread level. Mark Harris described this top-down view as a recursive process in his [slides on reduction](https://developer.download.nvidia.cn/assets/cuda/files/reduction.pdf). Here we leverage on his idea and summarize this into a three step process:
+1. Setting up nt (number of threads per block) and vt (number of values to process per thread) so that each CTA processes a fixed number of elements in one kernel run;
+2. Launch div_up(count, nt*vt) CTA to run CTA-wide reduction. Each CTA cooperatively compute a partial scalar result in parallel;
+3. If the number of partial scalar results is larger than nt*vt, go back to step 2; else launch a single CTA-wide reduction to get the final result.
+
+[kernel_reduce.hxx:11](https://github.com/yzhwang/moderngpu/blob/master/src/moderngpu/kernel_reduce.hxx#L11)
+```C++
+template<typename launch_arg_t = empty_t, typename input_it, 
+  typename output_it, typename op_t>
+void reduce(input_it input, int count, output_it reduction, op_t op, 
+  context_t& context) {
+
+  typedef typename conditional_typedef_t<launch_arg_t, 
+    launch_params_t<128, 8>
+  >::type_t launch_t;
+
+  typedef typename std::iterator_traits<input_it>::value_type type_t;
+
+  int num_ctas = launch_t::cta_dim(context).num_ctas(count);
+  mem_t<type_t> partials(num_ctas, context);
+  type_t* partials_data = partials.data();
+
+  auto k = [=] MGPU_DEVICE(int tid, int cta) {
+    typedef typename launch_t::sm_ptx params_t;
+    enum { nt = params_t::nt, vt = params_t::vt, nv = nt * vt };
+    typedef cta_reduce_t<nt, type_t> reduce_t;
+    __shared__ typename reduce_t::storage_t shared_reduce;
+
+    // Load the data for the first tile for each cta.
+    range_t tile = get_tile(cta, nv, count);
+    array_t<type_t, vt> x = mem_to_reg_strided<nt, vt>(input + tile.begin, 
+      tid, tile.count());
+
+    // Reduce the multiple values per thread into a scalar.
+    type_t scalar;
+    strided_iterate<nt, vt>([&](int i, int j) {
+      scalar = i ? op(scalar, x[i]) : x[0];
+    }, tid, tile.count());
+
+    // Reduce to a scalar per CTA.
+    scalar = reduce_t().reduce(tid, scalar, shared_reduce, 
+      min(tile.count(), (int)nt), op, false);
+
+    if(!tid) {
+      if(1 == num_ctas) *reduction = scalar;
+      else partials_data[cta] = scalar;
+    }
+  };
+  cta_launch<launch_t>(k, num_ctas, context);
+
+  // Recursively call reduce until there's just one scalar.
+  if(num_ctas > 1)
+    reduce<launch_params_t<512, 4> >(partials_data, num_ctas, reduction, op, 
+      context);
+}
+```
+
+The key to high performance is as always: to get a higher occupancy. From the top-down view, launching enough number of CTAs is a must for higher occupancy. Here shows an illustration of this process:
+
+![top_down_reduction](/public/images/top_down_reduction.png)
+
+__Bottom-Up View__
+
+In our GPU performance guide post, we show that the set up of nt and vt can heavily affect the occupancy. On the other hand, to take the advantage of ILP, we usually set vt to be larger than 1 (common options include 7, 9, 11, etc..) and use register blocking to reduce vt number of elements within one thread first.
+
+[kernel_reduce.hxx:37](https://github.com/yzhwang/moderngpu/blob/master/src/moderngpu/kernel_reduce.hxx#L37)
+
+```C++
+type_t scalar;
+    strided_iterate<nt, vt>([&](int i, int j) {
+      scalar = i ? op(scalar, x[i]) : x[0];
+    }, tid, tile.count());
+```
+
+Register blocking also happens within one CTA, when nv (nt*vt) is larger than warp size:
+
+[cta_reduce.hxx:63](https://github.com/yzhwang/moderngpu/blob/master/src/moderngpu/cta_reduce.hxx#L63)
+
+```C++
+// Store your data into shared memory.
+    storage.data[tid] = x;
+    __syncthreads();
+
+    if(tid < group_size) {
+      // Each thread scans within its lane.
+      strided_iterate<group_size, num_items>([&](int i, int j) {
+        if(i > 0) x = op(x, storage.data[j]);
+      }, tid, count);
+```
+
+ILP can guarantee enough thread-level parallelism, moving up a level to the warp level, from Kepler onward, NVIDIA introduced warp shuffle primitives that could do intra-warp thread communication more efficient. Nowadays using warp shuffle to write warp-level parallel algorithm has become a standard. The following code snapshot shows a shuffle version of warp-wide tree reduction:
+
+[cta_reduce.hxx:11](https://github.com/yzhwang/moderngpu/blob/master/src/moderngpu/cta_reduce.hxx#L11)
+
+```C++
+// requires __CUDA_ARCH__ >= 300.
+// warp_size can be any power-of-two <= warp_size.
+// warp_reduce_t returns the reduction only in lane 0.
+template<typename type_t, int group_size>
+struct shfl_reduce_t {
+ 
+  static_assert(group_size <= warp_size && is_pow2(group_size),
+    "shfl_reduce_t must operate on a pow2 number of threads <= warp_size (32)");
+  enum { num_passes = s_log2(group_size) };
+
+  template<typename op_t = plus_t<type_t> >
+  MGPU_DEVICE type_t reduce(int lane, type_t x, int count, op_t op = op_t()) {
+    if(count == group_size) { 
+      iterate<num_passes>([&](int pass) {
+        int offset = 1<< pass;
+        x = shfl_down_op(x, offset, op, group_size);
+      });
+    } else {
+      iterate<num_passes>([&](int pass) {
+        int offset = 1<< pass;
+        type_t y = shfl_down(x, offset, group_size);
+        if(lane + offset < count) x = op(x, y);
+      });
+    }
+    return x;
+  }
+};
+```
+
+In moderngpu, Sean made a further optimization which is to combine warp-wide shffle instrinsic with operator inside the ptx code:
+
+[intrinsics.hxx:](https://github.com/yzhwang/moderngpu/blob/master/src/moderngpu/intrinsics.hxx#L232)
+
+```C++
+#define SHFL_OP_MACRO(dir, is_up, ptx_type, r, c_type, ptx_op, c_op) \
+MGPU_DEVICE inline c_type shfl_##dir##_op(c_type x, int offset, \
+  c_op<c_type> op, int width = warp_size) { \
+  c_type result = x; \
+  int mask = (warp_size - width)<< 8 | (is_up ? 0 : (width - 1)); \
+  int lane = threadIdx.x & (warp_size - 1); \
+  if (lane < width) { \
+  unsigned threadmask = __activemask(); \
+  asm( \
+    "{.reg ."#ptx_type" r0;" \
+    ".reg .pred p;" \
+    "shfl.sync."#dir".b32 r0|p, %1, %2, %3, %4;" \
+    "@p "#ptx_op"."#ptx_type" r0, r0, %5;" \
+    "mov."#ptx_type" %0, r0; }" \
+    : "="#r(result) : #r(x), "r"(offset), "r"(mask), "r"(threadmask), #r(x)); \
+  } \
+  return result; \
+}
+```
+
+__Combined Together__
+
+The full process of an efficient GPU reduction starts from setting up nt and vt. Then each block loads nv elements into a tile. The elements in one tile will first be reduced to nt number since each thread uses register blocking to reduce vt number of elements. Then all these vt elements will be loaded to shared memory on each block. If nt > warp_size, warp_size/nt items use register blocking again to generate warp_size number of elements per block to reduce. Then a warp-wide tree reduction is launched to generate the per block reduced scalar result. The program will update the count and launch kernel on these partial reduced scalars until they all get reduced to one scalar: the final result.
 
 benchmark:
 
-application:
+P40: 347.0 GB/s
+count: 33554432, Time: 0.463776, items per second: 72350515200.000000
+Reduction for count 33554432 success
+count: 67108864, Time: 0.882688, items per second: 76027838464.000000
+Reduction for count 67108864 success
+count: 134217728, Time: 1.729568, items per second: 77601882112.000000
+Reduction for count 134217728 success
+count: 268435456, Time: 4.082752, items per second: 65748652032.000000
+Reduction for count 268435456 success
+count: 536870912, Time: 8.132608, items per second: 66014605312.000000
+Reduction for count 536870912 success
+count: 1073741824, Time: 16.228352, items per second: 66164563968.000000
+Reduction for count 1073741824 success
+
+V100: 898.0 GB/s
+count: 33554432, Time: 0.192704, items per second: 174124204032.000000
+Reduction for count 33554432 success
+count: 67108864, Time: 0.416480, items per second: 161133461504.000000
+Reduction for count 67108864 success
+count: 134217728, Time: 0.788384, items per second: 170244096000.000000
+Reduction for count 134217728 success
+count: 268435456, Time: 1.495200, items per second: 179531464704.000000
+Reduction for count 268435456 success
+count: 536870912, Time: 2.968640, items per second: 180847427584.000000
+Reduction for count 536870912 success
+count: 1073741824, Time: 5.888576, items per second: 182343204864.000000
+Reduction for count 1073741824 success
 
