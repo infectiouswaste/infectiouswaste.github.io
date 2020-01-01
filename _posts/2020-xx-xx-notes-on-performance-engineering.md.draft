@@ -1,0 +1,114 @@
+what is more important than performance?
+compatibility
+functionality
+reliability
+correctness
+maintainability
+robustness
+clarity
+modularity
+testability
+debuggability
+portability
+usability
+
+performance is the currency of computing. you can buy needed properties with
+performance.
+
+--------------
+
+software performance engineering was common in the early days since machine
+resources were limited.
+
+Premature optimization is the root of all evil. [K79]
+
+More computing sins are committed in the name of efficiency (without necessarily achieving it) than for any other single reason — including blind stupidity. [W79]
+
+The First Rule of Program Optimization: Don’t do it. The Second Rule of Program Optimization — For experts only: Don’t do it yet. [J88]
+
+scaling/power/job/ all getting hotter
+
+but still hard
+
+fundamentally: How can we write software to utilize modern hardware efficiently?
+
+--------------------
+What is performance?
+computing: GFLOPs
+memory: throughput (bandwidth)
+disk: size/speed
+---------------------
+
+use time and total flops to compute proportion to the peak performance.
+sample sort example
+rootline model
+GPU performance guide (occupancy vs. ILP)
+---------------------
+
+matmul example:
+4096*4096, 4096*4096
+py: 6hr, java: 46min, C: 19min
+compiled directly to machine code > byte-code, then interpreted and JIT compiled
+into machine code > interpreted
+
+cache hits/misses
+spatial locality/temporal locality
+
+compiler opt:
+-O1, -O2, -O3
+
+multi-core, many-core parallelism
+
+parallel outer loops rather than inner loops
+
+---------------------------------------------
+
+analyzing memory accesses:
+try different blocks and tiles (TVM)
+
+recursive parallel (divide and conquer)
+
+SIMD
+
+intel MKL 40% peak perf
+---------------------------------------
+
+GPU matmul:
+even faster.
+---------------------------------------
+
+pre-computed:
+example: hash, lookup table, SAT, Cuthill–McKee, sorted edge list in graph
+static octree
+
+autotune:
+like JIT, first try all, data-driven, find the best, then amortize the tried
+time by using the best for frequently loaded cases.
+
+algorithmic:
+find vertex cover (wechat red packet)
+vgg/resnet/depthwise/octave conv
+hybrid allreduce
+DES
+----------------------------------------
+communication:
+do not cause stall. (reorder, fusion)
+do not waste bandwidth. (fusion, hybrid allreduce)
+
+Cycle:
+
+baseline
+find bottleneck
+try alternatives
+set the improved version to new baseline
+------------------------------------------
+
+Also, know when to stop.
+it's an art of tradeoff. Getting 50% is good, getting 80% is excellent.
+getting 95% usually costs too much effort, unless the return matches.
+getting 100%? Show me how.
+
+My mentor:
+John Owens
+Sean Baxter
+Scott Gray
