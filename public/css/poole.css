@@ -79,6 +79,16 @@ a:focus {
   text-decoration: underline;
 }
 
+h1, h2, h1 a, h2 a:lang(zh) {
+  font-family: "PT Sans", "cwTeXMing", serif;
+}
+h3, h4, h5, h6, p, table, img, a, ul, li:lang(zh) {
+  font-family: "PT Sans", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+blockquote p:lang(zh){
+  font-family: "PT Sans", "STKaiti", "Kaiti", "cwTeXKai", "Microsoft YaHei", sans-serif;
+}
+
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: .5rem;
@@ -230,7 +240,7 @@ blockquote p:last-child {
 img {
   display: block;
   max-width: 100%;
-  margin: 0 0 1rem;
+  margin: 0 auto;
   border-radius: 5px;
 }
 
@@ -331,6 +341,10 @@ tbody tr:nth-child(odd) th {
 .page,
 .post {
   margin-bottom: 4em;
+}
+
+.center {
+  text-align: center;
 }
 
 /* Blog post or page title */
