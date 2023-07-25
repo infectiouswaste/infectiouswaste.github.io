@@ -6,6 +6,15 @@
   <!-- Enable responsiveness on mobile devices-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
+  <style>
+    @font-face {
+      font-family: 'Verdana';
+      src: url('{{ site.baseurl }}/public/fonts/verdana.ttf') format('truetype');
+	font-family: 'Verdana-bold';
+      src: url('{{ site.baseurl }}/public/fonts/verdana-bold.ttf') format('truetype');
+    }
+  </style>
+
   <title>
     {% if page.title == "Home" %}
       {{ site.title }} &middot; {{ site.tagline }}
