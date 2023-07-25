@@ -49,12 +49,12 @@ body {
 
 html {
   font-family: "Verdana", sans-serif;
-  font-size: 16px;
+  font-size: 13px;
   line-height: 1.5;
 }
 @media (min-width: 38em) {
   html {
-    font-size: 20px;
+    font-size: 16px;
   }
 }
 
@@ -204,7 +204,7 @@ pre code {
   font-family: Menlo, Monaco, "Courier New", monospace !important;
 }
 .gist .markdown-body {
-  padding: 15px;
+  padding: 12px;
 }
 .gist pre {
   padding: 0;
