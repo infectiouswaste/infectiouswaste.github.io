@@ -80,10 +80,10 @@ a:focus {
 }
 
 h1, h2, h1 a, h2 a:lang(zh) {
-  font-family: "Verdana-bold", "cwTeXMing", serif;
+  font-family: "Verdana", "cwTeXMing", serif;
 }
 h3, h4, h5, h6, p, table, img, a, ul, li:lang(zh) {
-  font-family: "Verdana-bold", "Verdana", "Microsoft YaHei", sans-serif;
+  font-family: "Verdana", "Microsoft YaHei", sans-serif;
 }
 blockquote p:lang(zh){
   font-family: "Verdana", "STKaiti", "Kaiti", "cwTeXKai", "Microsoft YaHei", sans-serif;
