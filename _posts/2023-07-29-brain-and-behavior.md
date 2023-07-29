@@ -3,7 +3,7 @@ layout: post
 title: Reading notes of Brain and Behavior (II)
 description: Reading notes of \<Brain and Behavior\>
 lang: zh
-tags: [reading-notes, brain-and-behavior]
+tags: [my-reading-notes, brain-and-behavior-book]
 ---
 
 
