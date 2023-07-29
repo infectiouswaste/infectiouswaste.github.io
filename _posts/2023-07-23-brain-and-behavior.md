@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Reading notes of Brain and Behavior (WIP)
+title: Reading notes of Brain and Behavior (I)
 description: Reading notes of \<Brain and Behavior\>
 lang: en
 ---
