@@ -3,6 +3,7 @@ layout: post
 title: Reading notes of Brain and Behavior (I)
 description: Reading notes of \<Brain and Behavior\>
 lang: en
+tags: [Reading Notes, Brain and Behavior]
 ---
 
 
