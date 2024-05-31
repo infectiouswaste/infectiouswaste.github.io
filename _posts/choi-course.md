@@ -55,3 +55,6 @@ use controlnet openpose to control camera view
 
 
 
+Hires Fix
+---------
+Hires Fix can have its own ckpt, prompt and sampler.
