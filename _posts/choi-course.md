@@ -133,3 +133,6 @@ changing the light directly
 ---------------------------
 IC-lighting could be a killer feature
 openpose + canny + I2I source can also change lighting
+Hires Fix
+---------
+Hires Fix can have its own ckpt, prompt and sampler.
