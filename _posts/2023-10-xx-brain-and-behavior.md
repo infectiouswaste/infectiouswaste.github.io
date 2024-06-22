@@ -16,10 +16,34 @@ published: false
 
 vision does not come for free.
 incoming electrochemical signals have to be interpreted by the brain, and that happens only with practice.
+sensor sells are our windows to the outside world.
+roughly 30% of the brain is devoted to constructing vision, comparing to 8% for touch, and 3% for hearing
+it's a small windows but good enough for our survival. Actually 390nm to 750nm compared to the full frequency range of electromagnetic radiation is an infinitesimally small range (1/1b). But we can survive on that!
+
 
 perception is active: fetching information on a need-to-know basis
+eye movement when seeing a picture
+blind spot and filling in effect
+multistability necker cube. more than one way to interpret the same visual input.
+binocular rivary: two images for two eyes
+competing at higher level interpretation.
 
-roughly 30% of the brain is devoted to constructing vision.
+an organism doesn't require all of the data in the world around it. It simply figures out
+how to retrieve the data it needs.
+
+saving resources by embedding prior experience
+internal models of the outside world allow the brain to save time and resources and to come to rapid perceptual conclusions.
+
+in this sense, the brain is a hypothesis generator, building models of the world and striving to veriry them based on input through the tiny windows of the senses.
+
+one assumption is that vision arises from "unconscious inference", brain infers, in a blackbox manner of the outside world and we simply perceives the end results of the calculations.
+the visual system relies on internal models built from best guesses, given retinal input and prior experience.
+
+Another surprising fact is: most neural activity is produced on the inside, and it is merely altered by external sensory input.
+
+
+
+
 
 much of what we see comes from unconscious inference: our expectation of what be believe is "out there"
 
