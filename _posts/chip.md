@@ -104,4 +104,8 @@ Chip companies are usually very secretive about transistor recipe, tool layout a
 
 i9 i7 i5 i3 are so-called due to number of cores are defected! OMG.
 
+H100 economics as estimated by Ben Spector
 
+![h100](../learn/h100-economics-ben-spector.png)
+
+So almost 90% profit rate. (listed price of H100 being $30k)
