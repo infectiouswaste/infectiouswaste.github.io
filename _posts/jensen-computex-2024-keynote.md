@@ -14,22 +14,22 @@ Blackwell GPU uses 3 gigawatt hours to train a GPT-4 model.
 10,000 GPUs, 10 days.
 17,000 J for Pascal GPU per token: two light bulbs (200W) running for two days.
 0.4 J per token for Blackwell GPUs.
-![dgx](./computex24/dgx.png)
+![dgx](/assets/computex24/dgx.png)
 A blackwell DGX contains 15K watts for 8 GPUs.
 so each one is 1200W*8=9600W
 Grace CPU will be 5400w.
 MGX:
-![mgx](./computex24/mgx.png)
+![mgx](/assets/computex24/mgx.png)
 4x2 B200 GPUs * 8 = 72 B200 + NVLink Switch Gen5
-![nvlink](./computex24/nvlink.png)
+![nvlink](/assets/computex24/nvlink.png)
 All-Reduce on Chip
 ethernet with Spectrum X:
 Network level of RDMA over ethernet
 Congestion control
 multiple training model noise jitter reducing
-![network](./computex24/network.png)
+![network](/assets/computex24/network.png)
 
 Next-gen GPU will be Rubin
-![hopper-blackwell-rubin](./computex24/hopper-blackwell-rubin.png)
+![hopper-blackwell-rubin](/assets/computex24/hopper-blackwell-rubin.png)
 
 

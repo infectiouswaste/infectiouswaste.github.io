@@ -12,5 +12,11 @@ published: false
 .highlight-left {margin-left: 0}
 </style>
 
->  What is the most important thing you could be working on in the world right now? ...and if you're not working on that, why aren't you? ---Aaron Swartz
+> "It's a good thing Doom 3 is selling very well..." (Having destroyed a rocket test vehicle worth $35,000) ---John Carmack
 
+Early Age
+Softdisk
+id software
+armadillo aerospace
+oculus
+Keen Technology and AGI
